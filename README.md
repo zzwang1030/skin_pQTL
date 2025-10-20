@@ -42,3 +42,18 @@ The scripts in this repository cover the complete analysis workflow:
 - **LocusZoom** or **ggplot2** for visualization
 
 ---
+
+Modify input/output paths in each script as needed.
+
+📄 License
+
+This project is released under the MIT License.
+You are free to reuse and adapt the code with appropriate citation.
+
+📚 Citation
+(Manuscript in preparation.)
+
+📬 Contact
+
+For questions or collaborations, please contact:
+[Yuanqiang Sun] (sunyuanqiang[AT]pku.edu.cn)

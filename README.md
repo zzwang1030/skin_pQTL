@@ -39,8 +39,8 @@ Scripts are named following the analysis workflow (e.g., preprocessing → pQTL 
 
 Example:
 ```bash
-Rscript 01_proteome_processing.R
-Rscript 04_QTL_process.R
+Rscript Fig1.R
+Rscript Fig2.R
 ```
 
 
@@ -55,8 +55,9 @@ submitting jobs to HPC clusters
 running QTL tools
 
 Example:
-
+```bash
 bash 03_pQTL_formal_code.sh
+```
 
 Ensure required software and environment modules are installed.
 

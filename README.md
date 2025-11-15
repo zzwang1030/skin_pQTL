@@ -17,16 +17,6 @@ The scripts in this repository cover the complete analysis workflow:
 6. **Integration with disease GWAS (e.g., leprosy)**
 
 
-
-## Repository Structure
-
-.
-├── R/ # R scripts used for data processing, QC, pQTL mapping, downstream analyses, and plotting
-├── shell/ # Shell scripts used for batch processing, pipeline execution, and HPC jobs
-├── data/ # Demo data and required input files
-│ # (Large full datasets are not stored; see details below)
-└── README.md
-
 ---
 
 ## Data Availability

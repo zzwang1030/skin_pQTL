@@ -41,8 +41,10 @@ Example:
 ```bash
 Rscript 01_proteome_processing.R
 Rscript 04_QTL_process.R
+```
 
-2. Running the shell scripts
+
+### 2. Running the shell scripts
 
 Shell scripts in shell/ folder are used for:
 
@@ -75,15 +77,15 @@ Ensure required software and environment modules are installed.
 
 Modify input/output paths in each script as needed.
 
-📄 License
+## 📄 License
 
 This project is released under the MIT License.
 You are free to reuse and adapt the code with appropriate citation.
 
-📚 Citation
+## 📚 Citation
 (Manuscript in preparation.)
 
-📬 Contact
+## 📬 Contact
 
 For questions or collaborations, please contact:
 [Yuanqiang Sun] (sunyuanqiang[AT]pku.edu.cn)

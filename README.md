@@ -1,7 +1,7 @@
-# Skin pQTL Study
+# skin_pQTL Analysis
 
-This repository contains analysis scripts for the **skin protein quantitative trait loci (pQTL)** study.  
-The project integrates skin proteomics, genetics, and transcriptomics to uncover molecular mechanisms underlying leprosy susceptibility and skin immune regulation.
+This repository contains the code and essential data used for the analysis in the skin pQTL study.  
+The project includes R scripts, shell workflows, and  datasets.  
 
 ---
 
@@ -16,18 +16,58 @@ The scripts in this repository cover the complete analysis workflow:
 5. **Transcriptome-wide and proteome-wide association analyses (TWAS/PWAS)**
 6. **Integration with disease GWAS (e.g., leprosy)**
 
+
+
+## Repository Structure
+
+.
+├── R/ # R scripts used for data processing, QC, pQTL mapping, downstream analyses, and plotting
+├── shell/ # Shell scripts used for batch processing, pipeline execution, and HPC jobs
+├── data/ # Demo data and required input files
+│ # (Large full datasets are not stored; see details below)
+└── README.md
+
 ---
 
-##  File Description
+## Data Availability
 
-| File | Description |
-|------|--------------|
-| `01_proteome_processing.R` | Preprocessing, normalization, and quality control of proteomics data. |
-| `02_proteome_aging.R` | Statistical modeling of age-related changes in protein abundance. |
-| `03_pQTL_formal_code.sh` | Main pipeline for pQTL mapping using genotype and proteome data (e.g., via QTLtools or TensorQTL). |
-| `04_QTL_process.R` | Downstream processing: variant annotation, LD pruning, and visualization of QTL results. |
-| `05_TWAS_fusion_code_leprosy.sh` | Transcriptome-wide association study (TWAS) and cross-trait integration with leprosy GWAS using FUSION. |
-| `06_PWAS_process.R` | Proteome-wide association (PWAS) analysis and colocalization with disease loci. |
+The `data/` folder contains **essentail files** to illustrate input formats required to reproduce all results  .  
+** Some full datasets are not completely included** due to size constraints (>50–100 MB).
+
+
+To fully reproduce the results, please download or generate the required data.
+
+Links for downloading full data or instructions to generate them may be provided in R or shell scripts.
+
+---
+
+## Usage
+
+### 1. Running the R scripts
+Navigate to the `R/` folder.  
+Scripts are named following the analysis workflow (e.g., preprocessing → pQTL mapping → integration → visualization).
+
+Example:
+```bash
+Rscript 01_proteome_processing.R
+Rscript 04_QTL_process.R
+
+2. Running the shell scripts
+
+Shell scripts in shell/ folder are used for:
+
+batch processing
+
+submitting jobs to HPC clusters
+
+running QTL tools
+
+Example:
+
+bash 03_pQTL_formal_code.sh
+
+Ensure required software and environment modules are installed.
+
 
 ---
 

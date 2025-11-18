@@ -28,14 +28,14 @@ rows_to_keep <- qq2$PG.ProteinAccessions %in% ff$protein
 qq3 <- qq2[rows_to_keep, ..selected_cols]; colnames(qq3)<-gsub("SP", "", colnames(qq3))
 qq4<- qq3 %>% tidyr::separate_rows(PG.ProteinAccessions, sep = ";"); qq4<-as.data.table(qq4)
 qq5<-melt.data.table(qq4, id.vars = "PG.ProteinAccessions"); names(qq5)<-c("pro_id","sample","intensity")
-qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)] # 填补 NA
+qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)] 
 mm<-dcast(qq5,formula = pro_id~sample, value.var = "intensity" )
 mm<-as.matrix(mm); rownames(mm)<-mm[,1]; mm<-mm[,-1]
 library(vsn); fit <- vsn2(mm); mm1 <- predict(fit, mm) 
 mm2<-as.data.table(mm1); mm2$pro_id<-rownames(mm1)
 mm2_long<-melt(mm2, id.vars = "pro_id"); names(mm2_long)<-c("pro_id","sample","intensity_log")
 mm2_long[, intensity:=2^intensity_log] 
-mm3<-mm2_long[,.(intensity_median=median(intensity,na.rm = T), intensity_mean=mean(intensity,na.rm = T)), by=.(pro_id)] # 同一 tissue 的不同 rep 之间 aggregate
+mm3<-mm2_long[,.(intensity_median=median(intensity,na.rm = T), intensity_mean=mean(intensity,na.rm = T)), by=.(pro_id)] 
 mm3[,c("intensity_median_log", "intensity_mean_log"):=.(ifelse(is.na(intensity_median), NA, log10(intensity_median)), ifelse(is.na(intensity_mean), NA, log10(intensity_mean)))]
 mm4<-mm3[,.(pro_id, intensity_median_log)]; mm4$tissue<-"skin"; names(mm4)[2]<-"intensity"
 
@@ -86,7 +86,7 @@ tmp2<-ff2[,.(pro_id, variant_id, id_hg38, study, beta, beta_se, pvalue)];
 names(tmp2)<-c("pro_id", "variant_id_hg38", "id_hg38", "study", "beta", "beta_se", "pvalue")
 ef<-rbind(tmp1, tmp2)
 
-pp<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.thin.txt.gz", header=T) # # a demo for complete skin_protein_all_qqnorm.txt.gz.allpairs.txt
+pp<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.thin.txt.gz", header=T) # a demo for complete skin_protein_all_qqnorm.txt.gz.allpairs.txt
 pp[,id_hg38:=paste(gene_id, variant_id, sep="_")]
 ef2<-merge(pp, ef[,3:7], by="id_hg38")
 fwrite(ef2, "~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/medRxiv_5Tissues_pQTL_Overlap_skin.csv", col.names=T, row.names=F, sep=",", quote=F)
@@ -159,10 +159,10 @@ tmp2<-ff2[,.(pro_id, variant_id, id_hg38, study)]; names(tmp2)<-c("pro_id", "var
 ef<-rbind(tmp1, tmp2) # 28824; 28630; 5657; 14840; 6
 nrow(ef); length(unique(ef$id_hg38)); length(unique(ef$pro_id)); length(unique(ef$variant_id_hg38)); length(unique(ef$study)) 
 
-common_pro <- intersect(ef$pro_id, pp$pro_id); length(common_pro) # 28/34 pGenes共同被鉴定到
+common_pro <- intersect(ef$pro_id, pp$pro_id); length(common_pro) # 28/34 pGenes were co-identified
 ef_sub <- ef[pro_id %in% common_pro, .(pro_id, variant_ef = variant_id_hg38)]
 pp_sub <- pp[pro_id %in% common_pro, .(pro_id, variant_pp = variant_id_hg38)]
-pairs <- merge(pp_sub, ef_sub, by = "pro_id", allow.cartesian = TRUE) # 每个蛋白内部，SNP 全排列
+pairs <- merge(pp_sub, ef_sub, by = "pro_id", allow.cartesian = TRUE) 
 pairs<-unique(pairs); nrow(pairs) # 593767
 
 all_snps <- unique(c(pairs$variant_pp, pairs$variant_ef))

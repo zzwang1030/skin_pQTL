@@ -37,7 +37,7 @@ my_sel <- names(qq2)%in%c("pro_id",sel_smp$V1)
 qq3 <- qq2[,..my_sel]; ncol(qq3)-1 # select pheno samples overlapped with geno samoles (186 = 249 overlap 198)
 qq3<-melt(qq3, id.vars = "pro_id"); names(qq3)<-c("pro_id","sample","value")
 qq3[, NA_num_pro:=sum(is.na(value)), by=.(pro_id)]; qq3[,NA_num_smp:=sum(is.na(value)),by=.(sample)] # NA counts for each protein and sample
-qq3<-qq3[NA_num_pro < ceiling((ncol(qq2)-1)*0.5)] # remove proteins with NA in more than half of samples。这一步其实没过滤掉样本。
+qq3<-qq3[NA_num_pro < ceiling((ncol(qq2)-1)*0.5)] # remove proteins with NA in more than half of samples
 unique(qq3[,.(sample,NA_num_smp)])->tmp; tmp[,pro_num:=nrow(qq2) - NA_num_smp]
 qq3<-qq3[NA_num_smp < nrow(qq2)-0.8*median(tmp$pro_num)] # remove samples with protein identifications below 80% of the median value of all samples. ref: PMID_36797296
 length(unique(qq3$pro_id)); length(unique(qq3$sample)) # remaining 5391/5979 proteins and 186 smp
@@ -55,8 +55,8 @@ qq4<-dcast(qq3,pro_id~sample,value.var = "value_log_scale_rank_qnorm")
 tmp<-merge(qq4, tss3[,-5:-6], by.x = "pro_id", by.y="id"); nrow(tmp); ncol(tmp)-4 # 5381 proteins and 186 smp
 my_sel2<-c(ncol(tmp)-2,ncol(tmp)-1,ncol(tmp),1,2:(ncol(tmp)-3))
 qq5<-tmp[,..my_sel2] # adjust column order to bed format
-qq5[,chr:=paste0("chr",chr)]; qq5<-qq5[order(chr,start)] # 后续index 需要排序
-qq6<-copy(qq5); qq6<-qq6[chr%in%sel_chr$V1]; dim(qq6)# 选择常染色体上的基因。5192 proteins and 186 smp
+qq5[,chr:=paste0("chr",chr)]; qq5<-qq5[order(chr,start)]
+qq6<-copy(qq5); qq6<-qq6[chr%in%sel_chr$V1]; dim(qq6) # 5192 proteins and 186 smp
 names(qq6)[1]<-"#Chr"; 
 fwrite(qq6, "~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt", sep = "\t",col.names = T)
 #  PCA of protein matrix  was performed in: ~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/pQTL_formal_code.docx
@@ -107,8 +107,8 @@ fwrite(tmp4,"~/Desktop/省皮/project/pQTL/QTL_calling_formal/skin_protein_all_q
 library(data.table)
 name_id_reviewd<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/human_uniprotkb_proteome_UP000005640_reviewed_2023_09_07_ID.txt",header = T)
 
-# nn<-fread("~/projects/pQTL/formal/skin_protein_all_qqnorm.txt.gz.allpairs.txt.gz",header=T); nrow(nn) # 15,669,687;
-nn<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.thin.txt.gz",header=T) # The complete dataset is very large; a smaller demo dataset is provided here.
+# nn<-fread("~/projects/pQTL/formal/skin_protein_all_qqnorm.txt.gz.allpairs.txt.gz",header=T); nrow(nn) # 15,669,687; # The complete dataset is too large to include here, so only a smaller demo dataset is provided.
+nn<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.thin.txt.gz",header=T)
 pp<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.permu.genes.txt.gz",header=T)
 names(pp)[-1]<-paste0(names(pp)[-1],"_perm"); nrow(pp[qval_perm<=0.05]) # 34 Sig proteins 
 
@@ -144,9 +144,7 @@ manhattan_plot(pp2, pval.colname = "pval_nominal", chr.colname = "chr", pos.coln
                highlight.colname = "color_class", highlight.col = highlight_colormap, color.by.highlight = TRUE) + mytheme + theme(legend.position="none")
 
 ## proportion variance explained (PVE) by lead pQTL ####
-#考虑到 SNP_PVE1 的方法既新，期刊又好，后面用 SNP_PVE1；两个方法结果正相关。但是后面画丰度~allele图的时候发现SNP_PVE1 方法选出来的例子画出来并不好，用SNP_PVE2
-
-SNP_PVE2 <- function(beta, MAF, se_beta, N) { # ref https://www.researchgate.net/post/How_to_determine_the_percent_phenotypic_variation_explained_PVE_by_a_selected_SNP; https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120758
+SNP_PVE2 <- function(beta, MAF, se_beta, N) { 
   numerator <- 2 * (beta^2) * MAF * (1 - MAF)
   denominator <- numerator + ((se_beta^2) * 2 * N * MAF * (1 - MAF))
   SNP_PVE <- numerator / denominator ; return(SNP_PVE) }
@@ -157,7 +155,7 @@ hh2<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/co
 hh2[,pve_snp2:=SNP_PVE2(slope, maf, slope_se, sample_N)]
 
 hh2<-hh2[order(protein_id, pval_nominal, -slope)]; hh3<-hh2[!duplicated(protein_id)]
-summary(hh3$pve_snp2)  # 0.1275  0.1408  0.1531  0.1723  0.1930  0.3091 # 后续用这个
+summary(hh3$pve_snp2)  # 0.1275  0.1408  0.1531  0.1723  0.1930  0.3091 
 nrow(hh3[pve_snp2>=0.2]); length(unique(hh3[pve_snp2>=0.2]$protein_id)) # 8 pGenes, 8 loci
 ggplot(hh3, aes(x=100*pve_snp2)) + 
   geom_histogram(bins=20, fill="steelblue",color='grey90', linewidth=0.5) +
@@ -228,7 +226,7 @@ tmp2<-tmp2[order(ratio,decreasing = T)]; tmp2$effect2 <- factor(tmp2$effect2,lev
 # feature annotation for lead SNP of all genes: vep -i skin_protein_all_qqnorm.txt.gz.permu.genes.forVEP.vcf -o skin_protein_all_qqnorm.txt.gz.permu.genes.forVEP.res.txt --gtf /sh2/home/sunyuanqiang/reference/Homo_sapiens.GRCh38.110.sorted.gtf.gz --fasta /sh2/home/sunyuanqiang/reference/Homo_sapiens.GRCh38.dna.primary_assembly.fa --tab --force_overwrite --show_ref_allele --sift b --canonical
 ss7<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/VEP_annotation_leadSNP_allGenes.csv", header = T)
 tmp_bg1<- as.data.table(table(ss7$Consequence)); names(tmp_bg1)<-c("effect","cnt") 
-tmp_bg2<-tmp_bg1[effect!="splice_acceptor_variant" &  effect!="splice_polypyrimidine_tract_variant"]; tmp_bg2[effect=="splice_region_variant"]$cnt<-3 # 为了简便，合并一下几个 splice 有关的 term
+tmp_bg2<-tmp_bg1[effect!="splice_acceptor_variant" &  effect!="splice_polypyrimidine_tract_variant"]; tmp_bg2[effect=="splice_region_variant"]$cnt<-3
 tmp_bg2[,ratio:=round(cnt*100 / sum(cnt), 1)]; tmp_bg2[, effect2:=gsub(" variant","",gsub("_", "", effect))]
 
 # lead pQTLs of pGenes vs lead pQTLs of all genes
@@ -253,7 +251,7 @@ identical(length(bb$gene_id),length(unique(bb$gene_id))) # TRUE，Consistent wit
 
 ## trans-pQTL identification ####
 # Using the approximate permutation method of QTLtools trans on Linux, code see in pQTL_formal_code.docx, output  skin_protein_all_qqnorm.txt.QTLtools.gz.all.trans.adjust.hits.sig005.txt.gz
-xx1<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.QTLtools.gz.all.trans.adjust.hits.sig005.txt.gz", header = F) #这是在 protein 水平上矫正过的FDR<0.05的
+xx1<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.QTLtools.gz.all.trans.adjust.hits.sig005.txt.gz", header = F) # 这是在 protein 水平上矫正过的FDR<0.05的
 nrow(xx1) # 3: P23497(SP100)~20:5746925:C:G(rs6085261) ; P23497(SP100)~20:5746954:C:T(rs6085262)
 
 ## RegulomeDB_rank annotation ####
@@ -289,7 +287,7 @@ aa$qtl<-factor(aa$qtl,levels = c( "bg", "pQTL"))
 aa$replication<-factor(aa$replication,levels = c("Regulome","No regulome"))
 aa[, fill_group := paste(qtl, replication, sep = "_")]
 
-ggplot(aa, aes(x = qtl, y = prop, fill = fill_group)) + # 展示比例
+ggplot(aa, aes(x = qtl, y = prop, fill = fill_group)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(values = c("#F4EDCA", "#C4961A", "#C3D7A4", "#52854C")) +
   # scale_fill_manual(values = c("mistyrose","indianred","lightsteelblue","steelblue")) +
@@ -297,7 +295,4 @@ ggplot(aa, aes(x = qtl, y = prop, fill = fill_group)) + # 展示比例
   scale_x_discrete(labels = c("bg"="Background", "pQTL"="pQTLs"))+
   coord_flip() +
   mytheme + theme(legend.position = "none")
-
-
-
 

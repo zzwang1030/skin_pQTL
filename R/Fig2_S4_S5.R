@@ -17,7 +17,7 @@ rows_to_keep <- qq2$PG.ProteinAccessions %in% ff$protein
 qq3 <- qq2[rows_to_keep, ..selected_cols]; colnames(qq3)<-gsub("SP", "", colnames(qq3))
 qq4<- tidyr::separate_rows(qq3, PG.ProteinAccessions, sep = ";"); qq4<-as.data.table(qq4)
 qq5<-melt.data.table(qq4, id.vars = "PG.ProteinAccessions"); names(qq5)<-c("pro_id","sample","intensity")
-qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)] # 填补 NA
+qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)]
 
 mm<-dcast(qq5,formula = pro_id~sample, value.var = "intensity" )
 mm<-as.matrix(mm); rownames(mm)<-mm[,1]; mm<-mm[,-1]
@@ -28,7 +28,7 @@ mm3<-melt.data.table(mm2, id.vars = "pro_id"); names(mm3)<-c("pro_id","sample","
 ## protein level vs age: rho ####
 hh3<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/Sample_info.csv", header = T)
 jj<-merge(mm3, hh3, by.x="sample", by.y="No"); jj<-jj[order(pro_id, age)]
-jj[, intensity2:=mean(intensity), by=.(pro_id, age)] # 同一年龄不同样本取平均
+jj[, intensity2:=mean(intensity), by=.(pro_id, age)] 
 jj1<-unique(jj[,.(pro_id, intensity2, age)])
 jj1[, c("rho_age", "rho_p_age") := .(cor.test(intensity2, age, method = "spearman")$estimate, cor.test(intensity2, age, method = "spearman")$p.value), by = .(pro_id)]
 fwrite(jj1, "~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/Protein_ageMean_cor.csv", col.names = T, row.names = F, sep=",", quote = F)
@@ -143,10 +143,10 @@ ff<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/cod
 cols_to_keep <- colnames(qq2)[2:ncol(qq2)] %in% colnames(ff); selected_cols <- c(TRUE, cols_to_keep)
 rows_to_keep <- qq2$PG.ProteinAccessions %in% ff$protein
 qq3 <- qq2[rows_to_keep, ..selected_cols]; names(qq3)<-gsub("SP", "", names(qq3))
-qq3<-as.data.table(qq3 %>% tidyr::separate_rows(PG.ProteinAccessions, sep = ";")) # 5956
-qq4<-merge(qq3, name_id_reviewd[,1:2], by.x="PG.ProteinAccessions", by.y="pro_id") # 6659；有些 pro_id对应多个 ENSG_id
+qq3<-as.data.table(qq3 %>% tidyr::separate_rows(PG.ProteinAccessions, sep = ";"))
+qq4<-merge(qq3, name_id_reviewd[,1:2], by.x="PG.ProteinAccessions", by.y="pro_id")
 qq5<-melt.data.table(qq4[,-1],id.vars = "gene_id"); names(qq5)<-c("gene_id","sample","intensity")
-qq5[, min:=min(intensity,na.rm = T), by=.(gene_id)]; qq5[,intensity:=ifelse(is.na(intensity),min/2,intensity)] # 填补 NA
+qq5[, min:=min(intensity,na.rm = T), by=.(gene_id)]; qq5[,intensity:=ifelse(is.na(intensity),min/2,intensity)]
 
 jj<-merge(qq5[,1:3], rr_rpkm3[,1:3], by=c("gene_id","sample")); names(jj)[3:4]<-c("protein","rna")
 length(unique(qq5$gene_id)); length(unique(qq5$sample)) # 6653; 248
@@ -179,7 +179,7 @@ rows_to_keep <- qq2$PG.ProteinAccessions %in% ff$protein
 qq3 <- qq2[rows_to_keep, ..selected_cols]; colnames(qq3)<-gsub("SP", "", colnames(qq3))
 qq4<- qq3 %>% tidyr::separate_rows(PG.ProteinAccessions, sep = ";"); qq4<-as.data.table(qq4)
 qq5<-melt.data.table(qq4, id.vars = "PG.ProteinAccessions"); names(qq5)<-c("pro_id","sample","intensity")
-qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)] # 填补 NA
+qq5[, min:=min(intensity,na.rm = T), by=.(pro_id)]; qq5[,intensity:=ifelse(is.na(intensity), min/2, intensity)]
 mm<-dcast(qq5,formula = pro_id~sample, value.var = "intensity" )
 mm<-as.matrix(mm); rownames(mm)<-mm[,1]; mm<-mm[,-1]
 library(vsn); fit <- vsn2(mm); mm1 <- predict(fit, mm) 
@@ -248,7 +248,7 @@ ggplot(df_plot, aes(x = negLogP, y = Description, fill = Count)) + geom_bar(stat
   theme(legend.position = c(0.95, 0.05), legend.justification = c("right", "bottom"), legend.title = element_text(size = 14), legend.text = element_text(size = 14))
 
 # rho compare ECDF
-wilcox.test(jj_age[age_group=="age1"]$rho_age, jj_age[age_group=="age4"]$rho_age, paired = TRUE) # 3.964501e-20,用这个
+wilcox.test(jj_age[age_group=="age1"]$rho_age, jj_age[age_group=="age4"]$rho_age, paired = TRUE) # 3.964501e-20
 ggplot(jj_age[age_group %in% c("age1", "age4")], aes(x = rho_age, color = age_group)) + 
   stat_ecdf(geom = "step", linewidth = 1) +
   scale_color_manual(values = c("age1" = "indianred", "age4" = "steelblue"), labels = c("age1" = "Young", "age4" = "Old")) +
@@ -329,7 +329,7 @@ for (i in 1:n) { # ~15 min
     lambda = p_dbl(lower = -4, upper = 1, trafo = function(x) 10^x)) # The actual value is 1e-4~10. Log-scale search with lambda sampling is more uniform and the search is more efficient.
   # 5. Tuning
   instance <- TuningInstanceBatchSingleCrit$new(task = task, learner = learner, resampling = rsmp("cv", folds = 5), 
-                                                measure = msr("regr.mae"), search_space = param_space, terminator = trm("evals", n_evals = 50),  # 尝试 30 个组合
+                                                measure = msr("regr.mae"), search_space = param_space, terminator = trm("evals", n_evals = 50), 
   )
   tuner <- tnr("random_search"); tuner$optimize(instance)
   # 6. Optimal parameter modeling

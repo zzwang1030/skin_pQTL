@@ -77,7 +77,7 @@ my_sel2<-c(ncol(tmp)-2,ncol(tmp)-1,ncol(tmp),1,2:(ncol(tmp)-3))
 rr_rpkm5<-tmp[,..my_sel2] # adjust column order to bed format
 rr_rpkm5[,chr:=paste0("chr",chr)]
 rr_rpkm5<-rr_rpkm5[order(chr,start)] # 后续index 需要排序
-rr_rpkm6<-copy(rr_rpkm5); rr_rpkm6<-rr_rpkm6[chr%in%sel_chr$V1]; dim(rr_rpkm6) # 选择常染色体上的基因。这步可省略，QC那一步已经完成
+rr_rpkm6<-copy(rr_rpkm5); rr_rpkm6<-rr_rpkm6[chr%in%sel_chr$V1]; dim(rr_rpkm6)
 names(rr_rpkm6)[1]<-"#Chr";
 fwrite(rr_rpkm6, "~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_RNA_all_qqnorm.txt", sep = "\t",col.names = T)
 
@@ -196,7 +196,7 @@ ggplot(total[pval_nominal.x<pt & pval_nominal.y<pt], mapping = aes(x = slope.x, 
   coord_cartesian(xlim = c(-2, 2),ylim = c(-2, 2)) +
   geom_hline(yintercept=0, color="black",linetype="dashed", size=0.4)+geom_vline(xintercept=0, color="black",linetype="dashed", size=0.4)+
   geom_smooth(method='lm', se=T, formula= y~x, col="red", linetype="dashed") +
-  mytheme + theme(legend.position = c(0.25, 0.9), legend.direction = "horizontal", legend.key.width = unit(1.2, "cm"), legend.text = element_text(size = 12)) # legend.position是相对位置, 范围必须在 [0,1] 之间
+  mytheme + theme(legend.position = c(0.25, 0.9), legend.direction = "horizontal", legend.key.width = unit(1.2, "cm"), legend.text = element_text(size = 12)) 
 
 #### pQTL and eQTL replication ########
 ## Count of eQTL&pQTL overlap ####
@@ -288,7 +288,7 @@ ggplot(oo[pval_nominal_pqtl<pt & pval_nominal_eqtl<pt], mapping = aes(x = slope_
   coord_cartesian(xlim = c(-1.2, 1.2),ylim = c(-1.2, 1.2)) +
   geom_hline(yintercept=0, color="black",linetype="dashed", linewidth=0.4) + geom_vline(xintercept=0, color="black",linetype="dashed", linewidth=0.4)+
   geom_smooth(method='lm', se=T, formula= y~x, col="red", linetype="dashed") +
-  mytheme + theme(legend.position = c(0.25, 0.9), legend.direction = "horizontal", legend.key.width = unit(1.2, "cm"), legend.text = element_text(size = 14)) # legend.position是相对位置, 范围必须在 [0,1] 之间
+  mytheme + theme(legend.position = c(0.25, 0.9), legend.direction = "horizontal", legend.key.width = unit(1.2, "cm"), legend.text = element_text(size = 14))
 
 ## eQTL and pQTL opposite direction ####
 oo<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.Overlap_eQTL.p001.txt.gz", header = T); nrow(oo) # 1478275
@@ -299,13 +299,13 @@ oo<-merge(oo, pp2[,.(gene_id, pval_nominal_threshold)], by.x = "pro_id", by.y ="
 oo[,p_sum:= -log10(pval_nominal_pqtl) -log10(pval_nominal_eqtl)]
 
 oo1<-oo[slope_pqtl*slope_eqtl<0,]; oo1<-oo1[order(p_sum)]; nrow(oo1) # 893
-nrow(oo1[pval_nominal_pqtl <= pval_nominal_threshold_pqtl & pval_nominal_eqtl <= pval_nominal_threshold_eqtl]) # 0 没有显著相反的点
+nrow(oo1[pval_nominal_pqtl <= pval_nominal_threshold_pqtl & pval_nominal_eqtl <= pval_nominal_threshold_eqtl]) 
 
 library(ggplot2); library(scales)  
 ggplot(oo1, aes(x = -log10(pval_nominal_pqtl), y = -log10(pval_nominal_eqtl), color = slope_pqtl)) +
   geom_point(size = 2, alpha = 0.8) + 
   geom_hline(yintercept = max(-log10(oo1$pval_nominal_threshold_eqtl)), linetype = "dashed", color = "black") +
-  geom_vline(xintercept = max(-log10(oo1$pval_nominal_threshold_pqtl)), linetype = "dashed", color = "black") + #标记显著性阈值
+  geom_vline(xintercept = max(-log10(oo1$pval_nominal_threshold_pqtl)), linetype = "dashed", color = "black") + 
   scale_color_gradient2(low = "blue", mid = "white", high = "red", midpoint = 0, name = "pQTL effect size", guide = guide_colorbar(title.position = "top", barwidth = 8, barheight = 1)) +
   labs(x = "-log10(P-value) of pQTL", y = "-log10(P-value) of eQTL", color = "pQTL effect size") +
   theme_minimal(base_size = 18) +  theme(legend.position = "top", legend.direction = "horizontal", legend.title.align = 0.5,  legend.title = element_text(size = 14), legend.text  = element_text(size = 14))
@@ -396,7 +396,7 @@ fwrite(pph4,"~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/c
 library(ComplexHeatmap); library(circlize)
 pph4<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/skin_protein_all_qqnorm.txt.gz.allpairs.Overlap_eQTL.colo2.pph4_gene.txt", header = T)
 name_id_reviewd<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/code/human_uniprotkb_proteome_UP000005640_reviewed_2023_09_07_ID.txt",header = T)
-pph4<-merge(pph4[,1:7], unique(name_id_reviewd[,c(1,4)]), by="pro_id"); nrow(pph4) # 5090.pro_id有重复的，对应多个 gene_name
+pph4<-merge(pph4[,1:7], unique(name_id_reviewd[,c(1,4)]), by="pro_id"); nrow(pph4) 
 names(pph4)<-gsub(".abf", "",names(pph4))
 nrow(pph4[PP.H0>=0.7,]); nrow(pph4[PP.H1>=0.7,]); nrow(pph4[PP.H2>=0.7,]); nrow(pph4[PP.H3>=0.7,]); nrow(pph4[PP.H4>=0.7,]) # 650,7,7,0,12
 hh2<-rbind(pph4[order(-PP.H1)][PP.H1>=0.7],pph4[order(-PP.H2)][PP.H2>=0.7],pph4[order(-PP.H3)][PP.H3>=0.7],pph4[order(-PP.H4)][PP.H4>=0.7])

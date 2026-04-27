@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# 定义路径
+GCTA=~/software/gcta/gcta64
+BFILE=/sh2/home/sunyuanqiang/projects/pQTL/formal/conditional_COJO/hg38_ASA_NH_196samples_474857SNPs_FWD_chr1_22_exclude_imputation_r8m5.newHeader.plink.nochr
+
+# 输出脚本文件名
+SCRIPT_FILE=run_cojo_tasks.sh
+> "$SCRIPT_FILE"  # 清空旧文件
+
+# 查找所有 cojo-file 并生成任务列表
+ls *_skin | while read file; do
+    protein_id=$(echo "$file" | cut -d'_' -f1)   # 提取蛋白ID
+    cond_files=( $(ls ${protein_id}_*:*_*:*_* 2>/dev/null) ) # 找到所有对应的 cojo-cond 文件，生成数组
+
+    if [ ${#cond_files[@]} -eq 0 ]; then
+        echo "Warning: 找不到 $protein_id 对应的 cojo-cond 文件" >&2
+        continue
+    fi
+
+    for cond_file in "${cond_files[@]}"; do
+        echo "$GCTA --bfile $BFILE --cojo-file $file --cojo-cond $cond_file --diff-freq 1 --cojo-wind 100000 --cojo-collinear 0.99 --out ${cond_file}.COJO.conditional" >> "$SCRIPT_FILE"
+    done
+done
+

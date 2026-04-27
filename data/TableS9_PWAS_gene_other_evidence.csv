@@ -1,0 +1,68 @@
+﻿Disease,Gene_symbol,TWAS.Z,TWAS.Q,MR_Z,MR_pval,PP.H4,Publication (PMID),Methods,Relevant findings
+AD,KLC2,-6.87,1.09E-08,-1.51,1.30E-01,0.1,Not reported,,
+AD,DGAT2,6.12,7.93E-07,1.21,2.25E-01,0.1,35462437,Case-control SSL-RNA profiling (skin surface lipids),DGAT2 is downregulated in children with AD.
+AD,DGAT2,6.12,7.93E-07,1.21,2.25E-01,0.1,29731129,Microarray,DGAT2 is consistently downregulated in both adult and pediatric AD patients.
+AD,KRT31,-5.43,3.16E-05,-1.56,1.19E-01,0.5,35682818,Case-control RNA-seq,KRT31 is downregulated in AD and represents a signature gene.
+AD,KRT31,-5.43,3.16E-05,-1.56,1.19E-01,0.5,38477552,Case-control RNA-seq,KRT31 is among the most significantly downregulated genes in AD.
+AD,SIPA1,5.14,1.14E-04,2.94,3.33E-03,0,35577104,Multi-omics integration and gene prioritization,Multiple lines of evidence support SIPA1 as associated with AD.
+AD,SIPA1,5.14,1.14E-04,2.94,3.33E-03,0,24880632,Single-molecule direct RNA sequencing and eQTL analysis,"SIPA1 is differentially expressed in AD skin, with AD GWAS loci acting as its eQTLs."
+AD,SIPA1,5.14,1.14E-04,2.94,3.33E-03,0,36155055,TWAS and Mendelian randomization,SIPA1 is inferred to be a causal gene for AD.
+AD,MEN1,-4.83,4.52E-04,-1.31,1.91E-01,0.1,Not reported,,
+AD,MAP4K4,-4.51,1.78E-03,0.07,9.46E-01,0.1,Not reported,,
+AD,GBA1,4.21,5.38E-03,-2.06,3.91E-02,0.2,32092464,Enzyme localization and activity analysis in AD skin,"In AD skin, β-glucocerebrosidase (encoded by GBA) shows altered localization and activity, indicating its involvement in skin barrier lipid imbalance."
+AD,GBA1,4.21,5.38E-03,-2.06,3.91E-02,0.2,34993951,Case-control comparison with stratum corneum enzyme activity and lipid analysis,"In pediatric AD, β-glucocerebrosidase activity is increased, accompanied by elevated glucosylcholesterol in the stratum corneum, suggesting dysregulated GBA1-mediated lipid metabolism in AD."
+AD,LEMD2,4.21,5.38E-03,0.62,5.36E-01,0.1,Not reported,,
+AD,RMDN3,-4.14,5.70E-03,-0.38,7.07E-01,0.2,Not reported,,
+AD,CST6,-4.15,5.70E-03,-2.11,3.50E-02,0,26717000,Multi-cohort transcriptomic meta-analysis,CST6 is significantly downregulated in AD and is involved in skin development and function.
+AD,CST6,-4.15,5.70E-03,-2.11,3.50E-02,0,12100189,Immunohistochemistry,"CST6 shows expanded expression in the stratum spinosum in AD, with increased levels regulating cysteine protease activity."
+AD,VPS36,3.96,1.14E-02,1.41,1.58E-01,0,Not reported,,
+AD,ACSF2,3.92,1.17E-02,2.03,4.21E-02,0.1,Not reported,,
+AD,ILRUN,-3.91,1.17E-02,-3.78,1.59E-04,0.3,Not reported,,
+AD,AFG3L2,3.85,1.41E-02,1.86,6.26E-02,0,Not reported,,
+AD,MRPL11,3.78,1.62E-02,2.8,5.07E-03,0,40017037,Transcriptome-wide association study (TWAS),MRPL11 is identified as a significant AD risk gene.
+AD,HNRNPAB,3.78,1.62E-02,1.16,2.48E-01,0.2,39723341,Mendelian randomization,"Higher HNRNPAB expression is associated with increased AD risk (OR = 1.44, FDR < 0.01)."
+AD,ITPR3,-3.76,1.67E-02,-0.16,8.71E-01,0.1,Not reported,,
+AD,PSMB9,3.7,2.02E-02,0.82,4.12E-01,0.1,33920176,Case-control SNP genotyping,The PSMB9 intronic rs1351383*C allele is associated with earlier age at AD onset.
+AD,PSMB9,3.7,2.02E-02,0.82,4.12E-01,0.1,38298829,RNA-seq and eQTL analysis,PSMB9 is upregulated in AD and plays a role in antigen presentation and CD8+ T cell activation.
+AD,SLC35A4,-3.62,2.55E-02,-2.05,4.08E-02,0.1,Not reported,,
+AD,GNA12,3.54,3.01E-02,1.7,8.90E-02,0,Not reported,,
+AD,PPP6R1,3.53,3.01E-02,2.91,3.63E-03,0,Not reported,,
+AD,AAMDC,-3.55,3.01E-02,-4.05,5.16E-05,0.5,Not reported,,
+AD,NUBP1,-3.56,3.01E-02,-1.06,2.89E-01,0,Not reported,,
+AD,PTPA,3.5,3.22E-02,2.93,3.39E-03,0.4,40164604,GWAS meta-analyses,PTPA is mapped to AD-associated loci based on V2G (variant-to-gene) evidence.
+AD,PGS1,-3.41,4.17E-02,-1.74,8.16E-02,0.1,40164604,GWAS meta-analyses,AD GWAS novel loci
+AD,C7,-3.41,4.17E-02,-2.02,4.29E-02,0.1,Not reported,,
+AD,EIF4E3,3.38,4.30E-02,0.88,3.78E-01,0.1,Not reported,,
+AD,ISOC1,3.37,4.30E-02,1.96,4.98E-02,0.1,28938649,Family-based whole-exome sequencing (WES),"Candidate causal variants are identified in AD pedigrees, showing co-segregation with disease."
+AD,CNPY2,-3.37,4.30E-02,-1.57,1.15E-01,0.1,Not reported,,
+Leprosy,ALDH2,-5.64,1.52E-05,-3.02,2.52E-03,1,29722023,Exome-wide association study (EWAS),"A missense variant in ALDH2, rs671, was identified as a novel susceptibility locus for leprosy and is associated with increased disease risk."
+Leprosy,TSFM,-5.73,1.52E-05,-1.5,1.33E-01,0.6,38020709,GWAS meta-analysis and fine-mapping,TSFM shows genetic and fine-mapping evidence at leprosy susceptibility loci and is prioritized as a putative causal gene for leprosy.
+Leprosy,DECR1,-5.47,2.75E-05,-0.73,4.62E-01,0.1,38020709,GWAS meta-analysis and fine-mapping,DECR1 is located within a leprosy susceptibility loci 
+Leprosy,ANKRD13A,-4.96,3.13E-04,0.65,5.17E-01,0.3,38020709,GWAS meta-analysis and fine-mapping,ANKRD13A is located within a leprosy susceptibility loci 
+Leprosy,NAA25,-4.7,9.32E-04,-2.05,4.00E-02,0.5,Not reported,,
+Leprosy,APOBR,4.11,1.19E-02,2.01,4.44E-02,0.2,38020709,GWAS meta-analysis and fine-mapping,APOBR shows genetic and fine-mapping evidence at leprosy susceptibility loci and is prioritized as a putative causal gene for leprosy.
+Leprosy,GBA1,3.97,1.83E-02,0.82,4.15E-01,0.2,Not reported,,
+Leprosy,HGFAC,3.8,3.24E-02,1.33,1.85E-01,0.1,Not reported,,
+Leprosy,DDB2,3.72,4.07E-02,2.35,1.86E-02,0,Not reported,,
+Leprosy,MPST,-3.65,4.70E-02,-0.68,4.98E-01,0,Not reported,,
+Leprosy,OARD1,3.62,4.85E-02,1.01,3.13E-01,0,Not reported,,
+Psoriasis,HNRNPAB,6.53,1.07E-07,2.33,1.97E-02,0.5,Not reported,,
+Psoriasis,HLA-DMB,5.03,4.00E-04,1.03,3.03E-01,0.1,12648225,PCR-SSCP and ARMS (case-control genetic association),HLA-DMB variants are associated with genetic susceptibility to psoriasis in a Korean population.
+Psoriasis,HLA-DMB,5.03,4.00E-04,1.03,3.03E-01,0.1,38757301,GWAS and polygenic risk score (PRS) analysis,HLA-DMB is identified as a genomic marker associated with psoriasis in the Taiwanese population.
+Psoriasis,HLA-DMB,5.03,4.00E-04,1.03,3.03E-01,0.1,39885523,Genome-wide gene-based association study (GWGAS) and Mendelian randomization,HLA-DMB shows a causal association with psoriasis.
+Psoriasis,CHCHD1,4.67,1.29E-03,0.25,8.03E-01,0.2,Not reported,,
+Psoriasis,FKBP10,-4.67,1.29E-03,-1.68,9.20E-02,0.4,Not reported,,
+Psoriasis,GBA1,-4.21,8.63E-03,1.22,2.22E-01,0.2,15610510,RT-qPCR & WB & Immunohistochemistry,"GBA1 expression was decreased in psoriatic non-lesional skin versus normal controls, but increased in lesional versus non-lesional skin."
+Psoriasis,CASQ1,-4.11,1.08E-02,-1.12,2.63E-01,0,Not reported,,
+Psoriasis,C1QTNF2,-3.97,1.69E-02,-2.71,6.67E-03,0,Not reported,,
+Psoriasis,MAP2K2,3.83,2.65E-02,2.66,7.78E-03,0,35762548,Microarray and RT-qPCR,"MAP2K2 expression in PBMCs from psoriatic arthritis patients decreases after Adalimumab treatment, indicating its potential as a biomarker."
+Psoriasis,RMDN3,3.65,3.98E-02,2.75,6.03E-03,0,17361080,Immunocytochemistry and Western blot,RMDN3 (PTPIP51) is associated with keratinocyte differentiation and apoptosis.
+Psoriasis,RMDN3,3.65,3.98E-02,2.75,6.03E-03,0,35563374,Case-control RNA-seq,RMDN3 is significantly upregulated at the lesional edge of psoriasis.
+Psoriasis,RUSF1,-3.65,3.98E-02,-3.37,7.46E-04,0.1,Not reported,,
+Psoriasis,DDX20,-3.65,3.98E-02,-3.76,1.72E-04,0,Not reported,,
+Psoriasis,EZR,3.61,4.28E-02,1.41,1.60E-01,0,20363977,Immunoscreening,"Ezrin (EZR) is a candidate autoantigen in psoriasis, recognized by patient sera and inducing T-cell activation."
+Psoriasis,EZR,3.61,4.28E-02,1.41,1.60E-01,0,35666151,Proteomics of PBMCs,ZR is upregulated in PBMCs of psoriasis patients and may serve as a predictive biomarker for Methotrexate treatment response.
+Psoriasis,CKAP5,-3.58,4.42E-02,-2.38,1.73E-02,0,Not reported,,
+Psoriasis,MDH2,3.54,4.54E-02,-0.85,3.95E-01,0,Not reported,,
+Psoriasis,PARL,-3.52,4.54E-02,-1.15,2.50E-01,0,Not reported,,
+Psoriasis,PPFIBP2,-3.54,4.54E-02,-1.15,2.50E-01,0.1,Not reported,,

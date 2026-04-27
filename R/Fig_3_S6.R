@@ -92,7 +92,7 @@ ggplot(hh3, aes(x = tss_distance/1e6, y = abs(slope))) +
 
 ## feature annotation by VEP: Fig. 3E ####
 # lead pQTL for pGene
-ss7 <- readxl::read_excel("/Users/sunyuanqian/Library/CloudStorage/OneDrive-个人/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/annotation_VEP.xls", sheet = 1)
+ss7 <- readxl::read_excel("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/annotation_VEP.xls", sheet = 1)
 ss7<-as.data.table(ss7)
 bb<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/TableS4_skin_pQTL_allSig_pairs.csv", header = T)
 bb<-bb[order(protein_id, pval_nominal, -slope)]; 
@@ -106,7 +106,7 @@ tmp2[,ratio:=round(cnt*100 / sum(cnt), 1)];
 tmp2[, effect2:=gsub(" variant","",gsub("_", "", effect))]
 
 # lead SNP of all proteins
-ss7 <- readxl::read_excel("/Users/sunyuanqian/Library/CloudStorage/OneDrive-个人/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/annotation_VEP.xls", sheet = 2)
+ss7 <- readxl::read_excel("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/annotation_VEP.xls", sheet = 2)
 ss7<-as.data.table(ss7)
 tmp_bg1<- as.data.table(table(ss7$Consequence)); 
 names(tmp_bg1)<-c("effect","cnt") 
@@ -173,10 +173,10 @@ ggplot(aa, aes(x = qtl, y = prop, fill = fill_group)) +
   theme(legend.position = "none")
 
 #### pQTL fine-mapping by susieR: Fig. S6A ####
-## 计算 ld R ####
-# # Generate a list of snp for each gene for susieR to calculate ld R.
+## calculate ld R ####
+## Generate a list of snp for each gene for susieR to calculate ld R.
 nn3 <- fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/skin_protein_all_qqnorm.txt.gz.allpairs.txt.gz")
-nn3 <- nn3[ !is.na(gene_id) & !is.na(variant_id) & !is.na(slope) & !is.na(slope_se) & slope_se > 0] # 基础过滤
+nn3 <- nn3[ !is.na(gene_id) & !is.na(variant_id) & !is.na(slope) & !is.na(slope_se) & slope_se > 0] 
 
 pp<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/skin_protein_all_qqnorm.txt.gz.permu.genes.txt.gz",header=T)
 length(unique(pp$gene_id)); length(unique(pp[qval<0.05,]$gene_id)) # 5152; 36
@@ -229,7 +229,7 @@ for (f in ld_files) {
   message("Finished ", g)
 }
 
-## 运行susieR ####
+## run susieR ####
 sumstats_file <- "~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/skin_protein_all_qqnorm.txt.gz.allpairs.txt.gz"
 R_dir <- "susie_R_tables"; 
 out_dir <- "susie_results"

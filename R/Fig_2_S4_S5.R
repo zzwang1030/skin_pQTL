@@ -127,7 +127,7 @@ names(gene_list) <- jj3$gene_id
 
 msigdb_human <- msigdbr( species = "Homo sapiens", collection = "C5", subcollection = "GO:BP")
 gene_sets <- msigdb_human[,c("gs_name","ensembl_gene")]; names(gene_sets)<-c("term", "gene")
-gene_sets$term <- tolower(gsub("^GOBP_", "", gene_sets$term));  length(unique(gene_sets$term)) # 不带 GOBP_ 前缀; 7583
+gene_sets$term <- tolower(gsub("^GOBP_", "", gene_sets$term));  length(unique(gene_sets$term)) 
 
 gsea_result <- GSEA(geneList = gene_list, 
                     exponent = 1, 

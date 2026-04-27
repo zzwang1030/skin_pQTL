@@ -13,7 +13,6 @@ mytheme <- theme_classic(base_size = 22) + theme(
 name_id_reviewd<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/human_uniprotkb_proteome_UP000005640_reviewed_2023_09_07_ID.txt",header = T)
 
 #### process clinical information ####
-# 经后续测试，将 sampling site 分为 Sun exposed/unexposed较好，以突出 age
 hh<-readxl::read_excel("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/TableS1_sample_information.xlsx", sheet=1, n_max = 264, col_names = T); hh<-as.data.table(hh)
 nrow(hh[proteomics==1]);
 # 248
@@ -39,7 +38,7 @@ ggplot(mypie, aes(x = "", y = value, fill = category)) +
   theme_void() + theme(legend.position = "none")
 
 #### DIA QC: hela ####
-aa<-fread("/Users/sunyuanqian/Library/CloudStorage/OneDrive-个人/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/M-GSGC0290947_13hela_Report_pro.tsv",header = T)
+aa<-fread("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/M-GSGC0290947_13hela_Report_pro.tsv",header = T)
 names(aa)[-1:-5]<-gsub("DIA","",gsub("\\[\\d+\\] ","",gsub("_S.+.PG.Quantity","",names(aa)[-1:-5])))
 aa[,PG.ProteinAccessions:=gsub(";.+","",PG.ProteinAccessions)]
 
@@ -251,7 +250,7 @@ mm3<-mm2_long[,.(intensity_median = median(intensity,na.rm = T),
 mm3[,c("intensity_median_log", "intensity_mean_log"):=.(ifelse(is.na(intensity_median), NA, log10(intensity_median)), ifelse(is.na(intensity_mean), NA, log10(intensity_mean)))]
 mm4<-merge(mm3, unique(name_id_reviewd[,c(1,4)]), by="pro_id") 
 
-aa<-readxl::read_excel("/Users/sunyuanqian/Library/CloudStorage/OneDrive-个人/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/mmc1_from_PMID40713952.xlsx", sheet = 4, skip = 2); 
+aa<-readxl::read_excel("~/Desktop/省皮/project/pQTL/manuscript/pQTL_MS_20251106_NatComm/revision1_202512/code/mmc1_from_PMID40713952.xlsx", sheet = 4, skip = 2); 
 aa<-as.data.table(aa) 
 aa<-aa[,-2:-3]; 
 aa[aa == 0] <- NA
@@ -335,7 +334,7 @@ tc_dt_final <- tc_dt[, .(Protein_1, Protein_2, coregulation_score = tc_tom)]
 
 library(Rtsne); library(gridExtra)
 DT <- copy(tc_dt_final)
-DT[, coreg_distance := (1 - log2(coregulation_score)) ]  # Turn co-regulation score back into a distance metric (distance越小，蛋白越相关) and log2-transform for better tSNE performance
+DT[, coreg_distance := (1 - log2(coregulation_score)) ]  # Turn co-regulation score back into a distance metric and log2-transform for better tSNE performance
 tmp<-merge(DT, unique(name_id_reviewd[,c(1,4)]), by.x="Protein_1", by.y="pro_id", all.x=T, allow.cartesian = TRUE)
 
 DTm <- dcast( data = rbind( DT[, .(Protein_1, Protein_2, coreg_distance)],
@@ -349,7 +348,7 @@ DTm <- as.dist(as.matrix( DTm ))         # Turn into numeric matrix then dist ob
 protein_IDs <- attr(DTm, "Labels")        # Extract protein IDs from dist object
 
 set.seed(123)
-SNE <- Rtsne(DTm, is_distance = TRUE, theta = 0.0, perplexity = 50, max_iter = 1000, verbose = TRUE) # 时间较长,10 min
+SNE <- Rtsne(DTm, is_distance = TRUE, theta = 0.0, perplexity = 50, max_iter = 1000, verbose = TRUE) 
 SNE <- as.data.table( SNE$Y ); SNE[, ID := protein_IDs ]
 SNE2 <- as.data.table(SNE %>% tidyr::separate_rows(ID, sep = ";"))
 ggplot(SNE2, aes(x = V1, y = V2))+
@@ -397,7 +396,7 @@ pca_df$age_group <- cut(pca_df$age,  breaks = 5,  labels = c("Group1","Group2","
 ggplot(pca_df, aes(x = PC1, y = PC2, shape = gender, color = Sun_exposure, size = age_group)) + 
   geom_point(alpha = 1) +
   scale_color_manual(values = c("Sun_exposed" = "indianred", "Sun_unexposed" = "steelblue")) +
-  scale_size_manual(values = seq(2, 6, 1)) +  # 对应 5 级大小
+  scale_size_manual(values = seq(2, 6, 1)) +  
   coord_cartesian(xlim=c(-50, 80), ylim=c(-50,90))+
   labs(x = paste0("PC1 (", round(summary(pca_result)$importance[2, 1] * 100, 1), "%)"),
        y = paste0("PC2 (", round(summary(pca_result)$importance[2, 2] * 100, 1), "%)"),
@@ -499,7 +498,7 @@ ggplot(jj[pro_id=="P0DJI8"], aes(x=Sun_exposure, y=intensity))+
 
 #### cell composition by BisqueRNA: Fig. S3F ####
 library(Biobase); library(BisqueRNA); library(Matrix)
-## expression matrix、meta 和 gene list from h5ad from https://spatial-skin-atlas.cellgeni.sanger.ac.uk/
+## expression matrix、meta and gene list from h5ad from https://spatial-skin-atlas.cellgeni.sanger.ac.uk/
 ## expression matrix and meta
 if(1){ # python
   conda install -c conda-forge scanpy anndata scipy pandas numpy
@@ -564,7 +563,7 @@ expr1_dense <- as.matrix(expr1)
 sc.eset <- ExpressionSet(assayData = expr1_dense, 
                          phenoData = AnnotatedDataFrame(sc_meta))
 
-## build bulk RNA 输入文件
+## build bulk RNA input
 rr<-fread("~/Desktop/省皮/project/pQTL/gene_sample_count_with_symbol_GO_KEGG_FPKM_islnc.xls") 
 sel_col<-grep("gene_ID|.+SRNA$",names(rr),value=T); 
 rr[,..sel_col]->rr_cnt; 
@@ -628,7 +627,7 @@ aa_long2$Sample<-factor(aa_long2$Sample, levels = unique(aa_long2$Sample))
 
 median_df <- aa_long2[, .(median_prop = median(Proportion)), by = CellType]; 
 median_df <- median_df[order(-median_prop)]
-aa_long2$CellType <- factor(aa_long2$CellType, levels = median_df$CellType) # 行按照细胞比例排序
+aa_long2$CellType <- factor(aa_long2$CellType, levels = median_df$CellType) 
 
 ggplot(aa_long2, aes(x = Sample, y = Proportion, fill = CellType)) +
   geom_bar(stat = "identity",width = 1, colour = "white", linewidth = 0.05) +

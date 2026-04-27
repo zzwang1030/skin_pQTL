@@ -10,12 +10,12 @@ usage() {
   exit 1
 }
 
-# 默认参数值
+
 diff_freq=0.4
 cojo_collinear=0.9
 cojo_p=7.90e-6
 
-# 解析参数
+
 while getopts ":i:b:d:c:p:" opt; do
   case $opt in
     i) INPUT="$OPTARG" ;;
@@ -27,7 +27,7 @@ while getopts ":i:b:d:c:p:" opt; do
   esac
 done
 
-# 参数检查
+
 if [[ -z "$INPUT" ]] || [[ -z "$BFILE" ]]; then
   echo "Error: input file and bfile prefix are required."
   usage

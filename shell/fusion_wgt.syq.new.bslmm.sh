@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 
-# 检查参数数量
+
 if [ "$#" -ne 5 ]; then
     echo "Usage: $0 <PRE> <NormExpression> <ExpressionHeader> <COVAR> <GENOTYPE>"
     exit 1
 fi
 
-# 从命令行参数读取变量
+
 PRE=$1
 NormExpression=$2
 ExpressionHeader=$3
@@ -15,17 +15,17 @@ COVAR=$4
 GENOTYPE=$5
 NR=${SLURM_ARRAY_TASK_ID}
 
-# 工具路径
+
 GCTA="$HOME/software/fusion_twas-master/gcta_nr_robust"
 PLINK="plink --allow-no-sex"
 GEMMA="$HOME/software/gemma-0.98.5-linux-static/gemma-0.98.5-linux-static-AMD64"
 FUSION="$HOME/software/fusion_twas-master"
 
 # Input files needed:
-# zcat $NormExpression | head -n1 | tr '\t' '\n' > $NormExpression.HEADER # 这个会输出到对应的绝对路径下
+# zcat $NormExpression | head -n1 | tr '\t' '\n' > $NormExpression.HEADER 
 # datamash transpose < $COVARaw > mytmp
 # awk '{print $1"\t"$0}' mytmp > mytmp2
-# awk 'NR==1{$1="FID"; $2="IID"}1' OFS="\t" mytmp2 > $COVARaw.plink.covar # 这个会输出到对应的绝对路径下
+# awk 'NR==1{$1="FID"; $2="IID"}1' OFS="\t" mytmp2 > $COVARaw.plink.covar 
 # COVAR=$COVARaw.plink.covar
 
 mkdir -p tmp_bslmm
